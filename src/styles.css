@@ -1,102 +1,255 @@
+/* General*/
+
 * {
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: sans-serif;
-    margin: 20px;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; 
-    min-height: 100vh;
-  }
-  
-  h1 {
-    margin-top: 0;
-    font-size: 22px;
-  }
-  
-  h2 {
-    margin-top: 0;
-    font-size: 20px;
-  }
-  
-  h3 {
-    margin-top: 0;
-    font-size: 18px;
-  }
-  
-  h4 {
-    margin-top: 0;
-    font-size: 16px;
-  }
-  
-  h5 {
-    margin-top: 0;
-    font-size: 14px;
-  }
-  
-  h6 {
-    margin-top: 0;
-    font-size: 12px;
-  }
-  
-  code {
-    font-size: 1.2em;
-  }
-  
-  ul {
-    padding-inline-start: 20px;
-  }
-  
-  * {
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: sans-serif;
-    margin: 20px;
-    padding: 0;
-  }
-  
-  .square {
-    background: #fff;
-    border: 1px solid #999;
-    float: left;
-    font-size: 48px;
-    font-weight: bold;
-    line-height: 80px;
-    height: 80px;
-    margin-right: -1px;
-    margin-top: -1px;
-    padding: 0;
-    text-align: center;
-    width: 80px;
-  }
-  
-  .board-row:after {
-    clear: both;
-    content: '';
-    display: table;
-  }
-  
-  .status {
-    margin-bottom: 10px;
-  }
-  .game {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-start; 
-    width: fit-content;
-   margin-top: 50px;
-  }
-  
-  .game-info {
-    margin-left: 20px;
-  }
-  
-  .winning {
-    background-color: #aaffaa;
-  }
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+main {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+h1 {
+  font-size: 32px;
+  color: #333;
+  text-align: center;
+}
+
+p {
+  font-size: 18px;
+  color: #555;
+  text-align: center;
+}
+
+/* Layout and Nav*/
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  margin: -20px -20px 20px -20px;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+nav a {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+.user-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-controls.auth-only {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.welcome-message {
+  font-weight: bold;
+}
+
+/* Components */
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #888;
+}
+
+/* Login Form in Modal */
+.login-form-container h2 {
+  margin-top: 0;
+  text-align: center;
+  font-size: 24px;
+}
+
+.login-form-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-form-container input {
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.login-form-container button {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+/* Auth Buttons in Header */
+.auth-button {
+  padding: 8px 16px;
+  border: 1px solid #007bff;
+  background-color: transparent;
+  color: #007bff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.auth-button.primary {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Page Specific */
+
+/* Lobby */
+.lobby-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+  margin-top: 100px;
+}
+
+/* Events */
+.events-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  margin-top: 50px;
+}
+
+.events-page-container p {
+  margin-bottom: 30px;
+}
+
+.events-page-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.events-page-container li {
+  margin-bottom: 15px;
+}
+
+.events-page-container li a {
+  display: inline-block;
+  padding: 12px 25px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 20px;
+  transition: background-color 0.2s ease;
+}
+
+.events-page-container li a:hover {
+  background-color: #0056b3;
+}
+
+/* Tic-Tac-Toe */
+.game {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin-top: 50px;
+}
+
+.status {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.square {
+  background: #fff;
+  border: 1px solid #999;
+  float: left;
+  font-size: 48px;
+  font-weight: bold;
+  line-height: 80px;
+  height: 80px;
+  width: 80px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  cursor: pointer;
+}
+
+.board-row:after {
+  clear: both;
+  content: '';
+  display: table;
+}
+
+.game-info {
+  margin-left: 40px;
+}
+
+.winning {
+  background-color: #aaffaa;
+}
