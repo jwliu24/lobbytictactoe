@@ -16,7 +16,7 @@ root.render(
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Lobby />} />
           <Route path="/events" element={<Events />} />
-          <Route path="/tictactoe" element={<Game />} />
+          <Route path="/tictactoe/:roomId" element={<Game />} />
         </Route>
       </Routes>
     </BrowserRouter>

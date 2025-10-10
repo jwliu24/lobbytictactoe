@@ -58,7 +58,6 @@ function AppLayout() {
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <LoginForm onLogin={handleLogin} onClose={() => setIsModalOpen(false)} />
       </Modal>
-      <foot></foot>
     </div>
   );
 }

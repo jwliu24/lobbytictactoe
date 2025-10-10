@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 function Square({ value, onSquareClick, isWinning }) {
   const className = "square" + (isWinning ? " winning" : "");
@@ -75,6 +75,7 @@ function Board({ xIsNext, squares, onPlay }) {
 }
 
 export default function Game() {
+  const { roomId } = useParams();
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
   const xIsNext = currentMove % 2 == 0;
@@ -110,6 +111,7 @@ export default function Game() {
 
   return (
     <>
+      <h2>Game Room ID: {roomId}</h2>
       <div className="game">
         <div className="game-board">
           <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
