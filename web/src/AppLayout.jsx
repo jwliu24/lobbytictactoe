@@ -4,19 +4,26 @@ import Modal from './components/Modal';
 import LoginForm from './components/LoginForm';
 
 function AppLayout() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
 
   const handleLogin = (username) => {
-    setUser({ name: username });
+    const userObject = { name: username};
+    setUser(userObject);
+    localStorage.setItem('user', JSON.stringify(userObject));
     navigate('/events');
   };
 
   const handleLogout = () => {
     setUser(null);
+    localStorage.removeItem('user');
     navigate('/');
   }
 

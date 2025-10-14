@@ -8,7 +8,6 @@ function Events() {
 
   useEffect(() => {
     socket.on('response_for_listEvents', (data) => {
-      // console.log('Received events from server:', data);
       setEventList(data);
     });
 
@@ -20,12 +19,20 @@ function Events() {
       navigate(`/tictactoe/${newEvent.id}`);
     });
 
+    socket.on('event_deleted', (deletedEventId) => {
+      console.log(`Event ${deletedEventId} was deleted by the owner.`);
+      setEventList((prevEvents) => 
+        prevEvents.filter(event => event.id !== deletedEventId)
+      );
+    });
+
     socket.emit('request_to_listEvents');
 
     return () => {
       socket.off('response_for_listEvents');
       socket.off('new_event_available');
       socket.off('event_created');
+      socket.off('event_deleted');
     }
   }, [navigate]);
 

@@ -22,7 +22,7 @@ function generateRoomId(){
 }
 
 let events = [
-  { id: generateRoomId(), name: "Tic-Tac-Toe Room" }
+  { id: generateRoomId(), name: "Tic-Tac-Toe", ownerId: null }
 ];
 
 app.get('/', (req, res) => {
@@ -31,6 +31,16 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log(`A user connected: ${socket.id}`);
+
+  socket.on('make_move', (data) => {
+    socket.to(data.roomId).emit('update_game', data.squares);
+    console.log(`Move made in room ${data.roomId}`);
+  });
+
+  socket.on('join_room', (roomId) => {
+    socket.join(roomId);
+    console.log(`User ${socket.id} joined room: ${roomId}`);
+  });
 
   socket.on('request_to_listEvents', () => {
     console.log(`User ${socket.id} is requesting the event list.`);
@@ -41,7 +51,8 @@ io.on('connection', (socket) => {
     console.log('Creating a new event:', data.name);
     const newEvent = {
       id: generateRoomId(),
-      name: data.name
+      name: data.name,
+      ownerId: socket.id
     };
     events.push(newEvent);
 
@@ -51,6 +62,13 @@ io.on('connection', (socket) => {
   
   socket.on('disconnect', () => {
     console.log(`User disconnected: ${socket.id}`);
+    console.log('Checking for owned rooms. Current events array:', events);
+    const eventOwned = events.find(event => event.ownerId === socket.id);
+    if (eventOwned) {
+      console.log(`Owner of Room ${eventOwned.name} disconnect. Deleting room.`)
+      events = events.filter(event => event.id !== eventOwned.id);
+      io.emit('event_deleted', eventOwned.id);
+    }
   });
 });
 

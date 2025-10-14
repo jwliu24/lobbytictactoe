@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import socket from './socket';
 
 function Square({ value, onSquareClick, isWinning }) {
   const className = "square" + (isWinning ? " winning" : "");
@@ -55,36 +56,59 @@ function Board({ xIsNext, squares, onPlay }) {
     <>
       <div className="status">{status}</div>
       {boardRows}
-      {/* <div className="board-row">
-        <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
-        <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
-        <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
-      </div>
-      <div className="board-row">
-        <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
-        <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
-        <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
-      </div>
-      <div className="board-row">
-        <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
-        <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
-        <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
-      </div> */}
     </>
   );
 }
 
 export default function Game() {
   const { roomId } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (roomId) {
+      socket.emit('join_room', roomId);
+      console.log(`User is joining Room: ${roomId}`);
+    }
+  }, [roomId]);
+
+  useEffect(() => {
+    const handleEventDeleted = (deletedEventId) => {
+      if (deletedEventId === roomId) {
+        alert('The game room was closed by owner.');
+        navigate('/events');
+      }
+    };
+    socket.on('event_deleted', handleEventDeleted);
+
+    return () => {
+      socket.off('event_deleted, handleEventDeleted');
+    }
+  }, [roomId, navigate]);
+
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
   const xIsNext = currentMove % 2 == 0;
   const currentSquares = history[currentMove];
 
+  useEffect(() => {
+    const handleGameUpdate = (newSquares) => {
+      console.log('Received game update from server:', newSquares);
+      const nextHistory = [...history.slice(0, currentMove + 1), newSquares];
+      setHistory(nextHistory);
+      setCurrentMove(nextHistory.length - 1);
+    };
+    socket.on('update_game', handleGameUpdate);
+    return ()=> {
+      socket.off('update_game', handleGameUpdate);
+    };
+  }, [history, currentMove]);
+
   function handlePlay(nextSquares) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
     setHistory(nextHistory);
     setCurrentMove(nextHistory.length - 1);
+
+    socket.emit('make_move', { roomId, squares: nextSquares });
   }
 
   function jumpTo(nextMove) {
