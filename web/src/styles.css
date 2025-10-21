@@ -170,43 +170,139 @@ nav a:hover {
 }
 
 /* Events */
-.events-page-container {
+.events-layout-container {
+  display: flex;
+  gap: 30px; 
+  width: 100%;
+  max-width: 900px;
+  margin: 50px auto; 
+  padding: 0 20px;
+}
+
+.event-panel {
+  background-color: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.create-event-panel select {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 16px;
+  background-color: white;
+}
+
+/* Left Panel */
+.create-event-panel {
+  flex: 1; 
+}
+
+.create-event-panel h2 {
+  font-size: 24px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.create-event-panel form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+}
+
+.create-event-panel label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.create-event-panel input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+
+.create-event-panel button {
   width: 100%;
-  margin-top: 50px;
 }
 
-.events-page-container p {
-  margin-bottom: 30px;
+/* Right Panel */
+.available-events-panel {
+  flex: 2;
 }
 
-.events-page-container ul {
+.available-events-panel h2 {
+  font-size: 20px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #555;
+  font-weight: bold;
+}
+
+.available-events-panel ul {
   list-style: none;
   padding: 0;
   margin: 0;
-  text-align: center;
 }
 
-.events-page-container li {
-  margin-bottom: 15px;
+.available-events-panel li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #eee;
 }
 
-.events-page-container li a {
-  display: inline-block;
-  padding: 12px 25px;
-  background-color: #007bff;
-  color: white;
+.available-events-panel li:last-child {
+  border-bottom: none;
+}
+
+.available-events-panel span {
+  font-weight: 500;
+}
+
+.join-button {
+  padding: 6px 14px;
+  background-color: #e9ecef;
+  color: #495057;
   text-decoration: none;
-  border-radius: 5px;
-  font-size: 20px;
-  transition: background-color 0.2s ease;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.2s;
 }
 
-.events-page-container li a:hover {
-  background-color: #0056b3;
+.join-button:hover {
+  background-color: #dee2e6;
+}
+
+/* Game Room */
+.player-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  width: 100%;
+  max-width: 400px;
+}
+
+.player-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.player-list li.ready {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
 }
 
 /* Tic-Tac-Toe */

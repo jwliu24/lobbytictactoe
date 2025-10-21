@@ -33,12 +33,12 @@ function AppLayout() {
         {location.pathname === '/' ? (
           <div className="user-controls auth-only">
             <button onClick={() => setIsModalOpen(true)} className="auth-button">Sign In</button>
-            <button onClick={() => setIsModalOpen(true)} className="auth-button primary">Sign Up</button>
+            {/* <button onClick={() => setIsModalOpen(true)} className="auth-button primary">Sign Up</button> */}
           </div>
         ) : (
           <>
             <nav>
-              <Link to="/">Lobby</Link>
+              <Link to="/">Home</Link>
               {user && <Link to="/events">Events</Link>}
             </nav>
             <div className="user-controls">
@@ -49,8 +49,8 @@ function AppLayout() {
                 </>
               ) : (
                 <>
-                  <button onClick={() => setIsModalOpen(true)} className="auth-button">Sign In</button>
-                  <button onClick={() => setIsModalOpen(true)} className="auth-button primary">Sign Up</button>
+                  <button onClick={() => setIsModalOpen(true)} className="auth-button primary">Sign In / Sign Up</button>
+                  {/* <button onClick={() => setIsModalOpen(true)} className="auth-button primary">Sign Up</button> */}
                 </>
               )}
             </div>

@@ -6,6 +6,7 @@ import AppLayout from './AppLayout.jsx';
 import Game from './TicTacToe.jsx';
 import Lobby from './Lobby.jsx';
 import Events from './Events.jsx';
+import GameRoom from './GameRoom.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -16,7 +17,8 @@ root.render(
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Lobby />} />
           <Route path="/events" element={<Events />} />
-          <Route path="/tictactoe/:roomId" element={<Game />} />
+          <Route path="/tictactoe/:roomId" element={<GameRoom />} />
+          <Route path="/tictactoe/:roomId/play" element={<Game />} />
         </Route>
       </Routes>
     </BrowserRouter>
