@@ -7,9 +7,19 @@ function GameRoom() {
   const { user } = useOutletContext();
   const navigate = useNavigate();
   const [players, setPlayers] = useState([]);
+  const [roomName, setRoomName] = useState('');
 
   useEffect(() => {
+
     if (user && roomId) {
+
+      socket.emit('get_room_details', roomId);
+      socket.on('room_details', (eventDetails) => {
+        if (eventDetails) {
+          setRoomName(eventDetails.name);
+        }
+      })
+
       socket.emit('join_room', { roomId, user });
 
       socket.on('update_player_list', (playerList) => {
@@ -19,9 +29,11 @@ function GameRoom() {
       socket.on('start_game', () => {
         navigate(`/tictactoe/${roomId}/play`);
       });
+
     }
 
     return () => {
+      socket.off('room_details');
       socket.off('update_player_list');
       socket.off('start_game');
     };
@@ -34,8 +46,9 @@ function GameRoom() {
   const allReady = players.length > 0 && players.every(p => p.ready);
 
   return (
+
     <div className='room-container'>
-      <h1>Game Room: {roomId}</h1>
+      <h1>Game Room: {roomName || 'Loading...'}</h1>
       <p>Waiting for players to get ready...</p>
 
       <ul className='player-list'>
@@ -46,6 +59,7 @@ function GameRoom() {
           </li>
         ))}
       </ul>
+
       <button onClick={handleReadyClick} className='auth-button primary'>
         Ready
       </button>

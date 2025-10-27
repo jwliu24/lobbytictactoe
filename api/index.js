@@ -34,6 +34,11 @@ const gameRooms = {};
 io.on('connection', (socket) => {
   console.log(`A user connected: ${socket.id}`);
 
+  socket.on('get_room_details', (roomId) => {
+    const room = events.find(event => event.id === roomId);
+    socket.emit('room_details', room);
+  });
+
   socket.on('join_room', (data) => {
     const { roomId, user } = data;
     if (!roomId || !user) {
@@ -88,6 +93,7 @@ io.on('connection', (socket) => {
       }
     }
   });
+
 
   socket.on('make_move', (data) => {
     socket.to(data.roomId).emit('update_game', data.squares);
