@@ -95,7 +95,7 @@ function Events() {
         </div>
 
         {/* Right Panel: Available Events */}
-        <div>
+        <div className='event-panel available-events-panel'>
           <h2>Available Events</h2>
           {eventList.length > 0 ? (
             <ul className='events-list'>

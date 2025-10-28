@@ -1,4 +1,4 @@
-/* General*/
+/* General Reset and Base Styles */
 
 * {
   box-sizing: border-box;
@@ -9,6 +9,7 @@ body {
   margin: 0;
   padding: 20px;
   min-height: 100vh;
+  background-color: #f8f9fa; /* Light background */
 }
 
 main {
@@ -16,6 +17,7 @@ main {
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  padding-top: 20px;
 }
 
 h1 {
@@ -24,22 +26,29 @@ h1 {
   text-align: center;
 }
 
+h2 {
+  font-size: 24px;
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
 p {
   font-size: 18px;
   color: #555;
   text-align: center;
 }
 
-/* Layout and Nav*/
+/* --- Layout and Nav --- */
 
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #f8f9fa;
+  background-color: #ffffff; /* White header background */
   border-bottom: 1px solid #dee2e6;
-  margin: -20px -20px 20px -20px;
+  margin: -20px -20px 0 -20px; 
 }
 
 nav {
@@ -51,6 +60,7 @@ nav {
 nav a {
   font-weight: bold;
   text-decoration: none;
+  color: #007bff;
 }
 
 nav a:hover {
@@ -73,9 +83,31 @@ nav a:hover {
   font-weight: bold;
 }
 
-/* Components */
+/* --- Auth Buttons --- */
 
-/* Modal */
+.auth-button {
+  padding: 8px 16px;
+  border: 1px solid #007bff;
+  background-color: transparent;
+  color: #007bff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.auth-button.primary {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.auth-button:hover {
+  opacity: 0.9;
+}
+
+/* --- Modal Components --- */
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -110,11 +142,9 @@ nav a:hover {
   color: #888;
 }
 
-/* Login Form in Modal */
+/* --- Login Form --- */
 .login-form-container h2 {
-  margin-top: 0;
   text-align: center;
-  font-size: 24px;
 }
 
 .login-form-container form {
@@ -140,108 +170,86 @@ nav a:hover {
   cursor: pointer;
 }
 
-/* Auth Buttons in Header */
-.auth-button {
-  padding: 8px 16px;
-  border: 1px solid #007bff;
-  background-color: transparent;
-  color: #007bff;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-}
+/* --- Events Page Layout --- */
 
-.auth-button.primary {
-  background-color: #007bff;
-  color: white;
-}
-
-/* Page Specific */
-
-/* Lobby */
-.lobby-container {
+/* Main container for 3 panel layout */
+.events-page-layout {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  gap: 20px; 
+  max-width: 1200px;
+  margin: 20px auto; 
+  padding: 0 20px;
   width: 100%;
-  text-align: center;
-  margin-top: 100px;
+  align-items: flex-start; 
 }
 
-/* Events */
+.events-list-container {
+  flex-grow: 1; 
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
 .events-layout-container {
   display: flex;
-  gap: 30px; 
-  width: 100%;
-  max-width: 900px;
-  margin: 50px auto; 
-  padding: 0 20px;
+  flex-direction: row;
+  gap: 20px;
+  flex-grow: 1; 
 }
 
+
+/* Shared Card/Panel Styles */
 .event-panel {
-  background-color: white;
-  padding: 24px;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-.create-event-panel select {
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  margin-bottom: 16px;
-  font-size: 16px;
-  background-color: white;
-}
-
-/* Left Panel */
-.create-event-panel {
+  padding: 20px;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  height: fit-content; 
   flex: 1; 
+  min-width: 250px; 
 }
 
-.create-event-panel h2 {
-  font-size: 24px;
-  margin-top: 0;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.create-event-panel form {
-  display: flex;
-  flex-direction: column;
+/* --- Create Event Panel --- */
+.create-event-panel {
+  
 }
 
 .create-event-panel label {
-  font-weight: bold;
-  margin-bottom: 8px;
-  color: #555;
+  display: block;
+  font-weight: 600;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  color: #374151;
 }
 
-.create-event-panel input {
-  padding: 12px;
-  border: 1px solid #ccc;
+.create-event-panel input,
+.create-event-panel select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d1d5db;
   border-radius: 6px;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
   font-size: 16px;
 }
 
-.create-event-panel button {
+.create-event-panel button[type="submit"] {
   width: 100%;
+  padding: 12px;
+  margin-top: 20px;
 }
 
-/* Right Panel */
-/* --- New Available Events List Styles --- */
-.events-container {
-  width: 100%;
-  max-width: 400px; /* Or adjust to fit your layout */
-}
+/* --- Available Events List --- */
 
-.events-container h2 {
-  font-size: 1.5rem;
-  color: #343a40;
-  margin-bottom: 20px;
-  text-align: center;
+.available-events-panel {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  height: fit-content; 
+  flex: 1; 
+  min-width: 250px; 
 }
 
 .events-list {
@@ -250,148 +258,84 @@ nav a:hover {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px; /* Adds space between items */
+  gap: 10px; 
 }
 
 .event-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: white;
-  padding: 16px 20px;
-  border-radius: 10px;
-  border: 1px solid #e9ecef;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease-in-out;
+  background-color: #f9fafb; /* off-white background */
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  transition: background-color 0.2s;
 }
 
 .event-item:hover {
-  transform: translateY(-2px); /* Slight lift effect on hover */
+  background-color: #f3f4f6;
 }
 
 .event-name {
   font-weight: 500;
-  font-size: 1.1rem;
-  color: #495057;
+  font-size: 1rem;
+  color: #1f2937;
 }
 
 .join-button {
-  background-color: #007bff; /* Blue */
+  background-color: #4f46e5; /* Indigo color */
   color: white;
+  padding: 8px 16px;
   border: none;
-  padding: 8px 18px;
   border-radius: 6px;
   cursor: pointer;
-  font-weight: bold;
-  font-size: 0.9rem;
   transition: background-color 0.2s;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .join-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+  background-color: #4338ca;
 }
 
 .no-events-message {
   color: #6c757d;
   text-align: center;
   margin-top: 20px;
-  padding: 20px;
+  padding: 15px;
   background-color: #f8f9fa;
   border-radius: 8px;
 }
 
-.available-events-panel {
-  flex: 2;
-}
-
-.available-events-panel h2 {
-  font-size: 20px;
-  margin-top: 0;
-  margin-bottom: 20px;
-  color: #555;
-  font-weight: bold;
-}
-
-.available-events-panel ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.available-events-panel li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px;
-  border-bottom: 1px solid #eee;
-}
-
-.available-events-panel li:last-child {
-  border-bottom: none;
-}
-
-.available-events-panel span {
-  font-weight: 500;
-}
-
-.join-button {
-  padding: 6px 14px;
-  background-color: #e9ecef;
-  color: #495057;
-  text-decoration: none;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: bold;
-  transition: background-color 0.2s;
-}
-
-.join-button:hover {
-  background-color: #dee2e6;
-}
-
-/* Leaderboard Panel */
-.events-page-layout {
-  display: flex;
-  flex-direction: row;
-  gap: 24px;
-}
-
-.events-list-container {
-  flex-grow: 1; /* This makes your events list take up the main space */
-}
+/* --- Leaderboard Panel --- */
 
 .leaderboard-panel {
-  width: 300px; /* This gives the leaderboard a fixed width */
-  flex-shrink: 0;
-  background-color: #f4f4f5; /* Light gray background */
-  border: 1px solid #e4e4e7;
-  border-radius: 8px;
-  padding: 16px;
-  height: fit-content; /* Makes it only as tall as its content */
+
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  height: fit-content; 
+  flex: 1; 
+  min-width: 250px; 
 }
 
 .leaderboard-panel h2 {
-  margin-top: 0;
-  font-size: 1.25rem;
+  text-align: center;
 }
 
-.leaderboard-panel p {
-  font-size: 0.875rem;
-  color: #52525b;
-}
-
-/* --- You already have this, just adding it for completeness --- */
 .leaderboard-list {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin-top: 15px;
 }
 
 .leaderboard-item {
   display: flex;
   align-items: center;
-  padding: 8px 0;
-  border-bottom: 1px solid #e4e4e7;
+  padding: 10px 0;
+  border-bottom: 1px solid #f3f4f6;
 }
 
 .leaderboard-item:last-child {
@@ -399,48 +343,26 @@ nav a:hover {
 }
 
 .leaderboard-item .rank {
-  font-size: 0.875rem;
-  font-weight: bold;
-  color: #71717a;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f59e0b; 
   width: 30px;
 }
 
 .leaderboard-item .name {
-  font-weight: 600;
+  font-weight: 500;
   flex-grow: 1;
+  color: #1f2937;
 }
 
 .leaderboard-item .wins {
-  font-weight: 600;
-  font-size: 0.875rem;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #10b981; 
 }
 
-/* Game Room */
-.player-list {
-  list-style: none;
-  padding: 0;
-  margin: 20px 0;
-  width: 100%;
-  max-width: 400px;
-}
+/* --- Game Room (Lobby) Styles --- */
 
-.player-list li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px;
-  background-color: #f8f9fa;
-  border-radius: 6px;
-  margin-bottom: 8px;
-  font-weight: bold;
-}
-
-.player-list li.ready {
-  background-color: #d4edda;
-  border: 1px solid #c3e6cb;
-}
-
-/* --- New Player Card Grid Styles --- */
 .lobby-container {
   max-width: 900px;
   margin: 40px auto;
@@ -448,28 +370,43 @@ nav a:hover {
   text-align: center;
 }
 
+.lobby-container h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.lobby-container p {
+  font-size: 1.1rem;
+  color: #6c757d;
+  margin-bottom: 30px;
+}
+
 .player-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  
+  grid-template-columns: 1fr 1fr; 
   gap: 20px;
   width: 100%;
-  margin: 40px 0;
+  max-width: 700px; 
+  margin: 40px auto; 
 }
 
 .player-card {
-  background-color: #f8f9fa;
+  background-color: #ffffff;
   border: 1px solid #dee2e6;
   border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 30px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 .player-name {
-  font-size: 1.1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
   color: #495057;
-  margin: 0 0 15px 0;
+  margin: 0 0 20px 0;
 }
 
+/* Base style for both the button and the 'Ready' text */
 .status-display,
 .status-button {
   width: 100%;
@@ -478,32 +415,48 @@ nav a:hover {
   font-size: 1rem;
   font-weight: bold;
   border: none;
-  transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
 .status-button {
   cursor: pointer;
 }
 
-/* Status Colors */
-.status-display.waiting,
+/* Opponent's status */
+.status-display.waiting {
+  background-color: #f8f9fa; /* Light gray */
+  color: #6c757d;
+  border: 1px solid #dee2e6;
+}
+
+.status-display.ready {
+  background-color: #d4edda; /* Light green */
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+/* Your button */
 .status-button.waiting {
-  background-color: #6c757d; /* Gray */
+  background-color: #007bff; /* Blue */
   color: white;
 }
 
-.status-display.ready,
+.status-button.waiting:hover {
+  background-color: #0056b3; /* Darker blue */
+}
+
 .status-button.ready {
   background-color: #28a745; /* Green */
   color: white;
 }
 
-/* Make the "I'm Ready" button a different color */
-.status-button.waiting {
-  background-color: #007bff; /* Blue */
+.status-button.ready:hover {
+  background-color: #28a745; 
 }
 
-/* Tic-Tac-Toe */
+
+/* --- Tic-Tac-Toe Game Board --- */
+
 .game {
   display: flex;
   flex-direction: row;
@@ -548,72 +501,3 @@ nav a:hover {
   background-color: #aaffaa;
 }
 
-/* --- Leaderboard Page Styles --- */
-.leaderboard-container {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 30px;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  text-align: center;
-}
-
-.leaderboard-container h1 {
-  margin-bottom: 10px;
-  color: #333;
-}
-
-.leaderboard-container p {
-  margin-bottom: 30px;
-  color: #6c757d;
-}
-
-.leaderboard-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.leaderboard-item {
-  display: flex;
-  align-items: center;
-  padding: 15px;
-  border-radius: 8px;
-  transition: background-color 0.2s;
-}
-
-.leaderboard-item:nth-child(odd) {
-  background-color: #f8f9fa;
-}
-
-.leaderboard-item:hover {
-  background-color: #e9ecef;
-}
-
-.leaderboard-item .rank {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #007bff;
-  min-width: 40px;
-  text-align: left;
-}
-
-.leaderboard-item .name {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #495057;
-  text-align: left;
-  flex-grow: 1; /* Pushes wins to the right */
-}
-
-.leaderboard-item .wins {
-  font-size: 1rem;
-  font-weight: bold;
-  color: #28a745;
-}
-
-/* --- Special styles for top 3 --- */
-.leaderboard-item:nth-child(1) .rank { color: #ffc107; } /* Gold */
-.leaderboard-item:nth-child(2) .rank { color: #adb5bd; } /* Silver */
-.leaderboard-item:nth-child(3) .rank { color: #cd7f32; } /* Bronze */
