@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import socket from './socket';
+import LeaderboardPanel from './LeaderboardPanel';
 
 function Events() {
   const [eventList, setEventList] = useState([]);
@@ -9,6 +10,10 @@ function Events() {
   const [newEventName, setNewEventName] = useState('');
   const [selectedGame, setSelectedGame] = useState('Tic-Tac-Toe');
   const availableGames = ['Tic-Tac-Toe'];
+
+  const handleJoinEvent = (roomId) => {
+    navigate(`/tictactoe/${roomId}`)
+  };
 
   useEffect(() => {
     socket.on('response_for_listEvents', (data) => {
@@ -39,7 +44,7 @@ function Events() {
       socket.emit('create_event', { name: newEventName });
       setNewEventName('');
     } else {
-      alert('Please eneter a name for the room.');
+      console.warn('Please enter a name for the room.');
     }
   };    
 
@@ -61,49 +66,58 @@ function Events() {
   };
 
   return (
-    <div className='events-layout-container'>
-      {/* Left Panel: Create Event */}
-      <div className='event-panel create-event-panel'>
-        <h2>Welcome, {user ? user.name : 'Player'}!</h2>
-        <form onSubmit={handleCreateEvent}>
-          <label>Select Game</label>
-          <select value={selectedGame} onChange={(e) => selectedGame(e.target.value)}>
-            {availableGames.map(game => (
-              <option key={game} value={game}>{game}</option>
-            ))}
-          </select>
+    <div className='events-page-layout'>
 
-          <label>Create a New Event</label>
-          <input 
-            type='text'
-            value={newEventName}
-            onChange={(e) => setNewEventName(e.target.value)}
-            placeholder='Enter a room name'
-          />
-          <button type='submit' className='auth-button primary'>
-          Create Event
-          </button>
-      </form>
+      <div className='events-list-container'>
+        <div className='events-layout-container'>
+
+          {/* Left Panel: Create Event */}
+          <div className='event-panel create-event-panel'>
+            <h2>Welcome, {user ? user.name : 'Player'}!</h2>
+            <form onSubmit={handleCreateEvent}>
+              <label>Select Game</label>
+              <select value={selectedGame} onChange={(e) => setSelectedGame(e.target.value)}>
+                {availableGames.map(game => (
+                  <option key={game} value={game}>{game}</option>
+                ))}
+              </select>
+
+              <label>Create a New Event</label>
+              <input 
+                type='text'
+                value={newEventName}
+                onChange={(e) => setNewEventName(e.target.value)}
+                placeholder='Enter a room name'
+              />
+              <button type='submit' className='auth-button primary'>
+              Create Event
+              </button>
+          </form>
+        </div>
+
+        {/* Right Panel: Available Events */}
+        <div>
+          <h2>Available Events</h2>
+          {eventList.length > 0 ? (
+            <ul className='events-list'>
+              {eventList.map((event) => (
+                <li key={event.id} className='event-item'>
+                  <span className='event-name'>{event.name}</span>
+                  <button onClick={() => handleJoinEvent(event.id)} className='join-button'>
+                    Join
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="no-events-message">No available events. Create one to get started!</p>
+          )}
+        </div>
+      </div>
     </div>
 
-    {/* Right Panel: Available Events */}
-    <div>
-      <h2>Available Events</h2>
-      {eventList.length > 0 ? (
-        <ul>
-          {eventList.map((event) => (
-            <li key={event.id}>
-              <span>{event.name}</span>
-              <Link to={`/tictactoe/${event.id}`} className='join-button'>
-                Join
-              </Link>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No active events yet</p>
-      )}
-    </div>
+    {/* Leaderboard Panel */}
+    <LeaderboardPanel />
   </div>
   );
 }

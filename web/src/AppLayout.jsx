@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import Modal from './components/Modal';
 import LoginForm from './components/LoginForm';
+import socket from './socket';
 
 function AppLayout() {
   const [user, setUser] = useState(() => {
@@ -14,16 +15,30 @@ function AppLayout() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (user) {
+      socket.connect();
+    } else {
+      socket.disconnect();
+    }
+
+    return () => {
+      socket.disconnect();
+    }
+  }, [user]);
+
   const handleLogin = (username) => {
     const userObject = { name: username};
     setUser(userObject);
     localStorage.setItem('user', JSON.stringify(userObject));
+    // socket.connect();
     navigate('/events');
   };
 
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem('user');
+    // socket.disconnect();
     navigate('/');
   }
 

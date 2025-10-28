@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import socket from './socket';
+import { updateLeaderboard } from './ScoreManager';
 
 function Square({ value, onSquareClick, isWinning }) {
   const className = "square" + (isWinning ? " winning" : "");
@@ -63,25 +64,42 @@ function Board({ xIsNext, squares, onPlay }) {
 export default function Game() {
   const { roomId } = useParams();
   const navigate = useNavigate();
+  const { user } = useOutletContext();
+  const [roomDetails, setRoomDetails] = useState(null);
+  const [winnerAnnounced, setWinnerAnnounced] = useState(false);
 
   useEffect(() => {
-    if (roomId) {
-      socket.emit('join_room', roomId);
-      console.log(`User is joining Room: ${roomId}`);
-    }
+    socket.emit('get_room_details', roomId);
+    console.log(`Fetching details for Room: ${roomId}`);
+
+    const handleRoomDetails = (details) => {
+      if (details) {
+        setRoomDetails(details);
+      }
+    };
+
+    socket.on('room_details', handleRoomDetails);
+
+    return () => {
+      socket.off('room_details', handleRoomDetails);
+    };
   }, [roomId]);
 
   useEffect(() => {
     const handleEventDeleted = (deletedEventId) => {
-      if (deletedEventId === roomId) {
-        alert('The game room was closed by owner.');
+      
+      if (String(deletedEventId) === String(roomId)) {
+        // alert('The game room was closed by the owner.');
+        console.warn('The game room was closed by the owner.');
         navigate('/events');
+      } else {
+        console.log("IDs did not match. Not navigating.");
       }
     };
     socket.on('event_deleted', handleEventDeleted);
 
     return () => {
-      socket.off('event_deleted, handleEventDeleted');
+      socket.off('event_deleted', handleEventDeleted);
     }
   }, [roomId, navigate]);
 
@@ -111,8 +129,17 @@ export default function Game() {
     socket.emit('make_move', { roomId, squares: nextSquares });
   }
 
+  const winnerInfo = calculateWinner(currentSquares);
+
+  if (winnerInfo && !winnerAnnounced && user && user.name) {
+    console.log(`Game won by ${user.name}. Updating leaderboard.`);
+    updateLeaderboard(user.name);
+    setWinnerAnnounced(true);
+  }
+
   function jumpTo(nextMove) {
     setCurrentMove(nextMove);
+    setWinnerAnnounced(false);
   }
 
   const moves = history.map((squares, move) => {
@@ -135,7 +162,7 @@ export default function Game() {
 
   return (
     <>
-      <h2>Game Room ID: {roomId}</h2>
+      <h2>Game Room: {roomDetails ? roomDetails.name : 'Loading...'}</h2>
       <div className="game">
         <div className="game-board">
           <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />

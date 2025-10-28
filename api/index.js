@@ -22,7 +22,7 @@ function generateRoomId(){
 }
 
 let events = [
-  { id: generateRoomId(), name: "Tic-Tac-Toe", ownerId: null }
+  // { id: generateRoomId(), name: "Tic-Tac-Toe", ownerId: null }
 ];
 
 app.get('/', (req, res) => {
@@ -39,28 +39,58 @@ io.on('connection', (socket) => {
     socket.emit('room_details', room);
   });
 
+  // socket.on('join_room', (data) => {
+  //   const { roomId, user } = data;
+  //   socket.join(roomId);
+
+  //   // if (!roomId || !user) {
+  //   //   console.error('SERVER ERROR: Invalid data for join_room event.');
+  //   //   return;
+  //   // }
+
+  //   if (!gameRooms[roomId]) {
+  //     gameRooms[roomId] = [];
+  //   }
+
+  //   const room = gameRooms[roomId];
+  //   // const isPlayerInRoom = room.some(player => player.id === socket.id);
+
+  //   if (!isPlayerInRoom) {
+  //     room.push({ id: socket.id, name: user.name, ready: false});
+  //   }
+
+  //   const allReady = room.length > 1 && room.every(p => p.ready);
+  // io.to(roomId).emit('room_state_update', {
+  //   players: room,
+  //   canStart: allReady
+  // });
+
+  //   console.log(`User ${user.name} (${socket.id}) joined room: ${roomId}`);
+
+  //   io.to(roomId).emit('update_player_list', gameRooms[roomId]);
+  // });
+
   socket.on('join_room', (data) => {
+    // ... (most of this is fine)
     const { roomId, user } = data;
-    if (!roomId || !user) {
-      console.error('Join room request failed: missing missing roomId or user data');
-      return;
-    }
     socket.join(roomId);
 
     if (!gameRooms[roomId]) {
       gameRooms[roomId] = [];
     }
-
-    const isPlayerInRoom = gameRooms[roomId].some(player => player.id === socket.id);
-
-    if (!isPlayerInRoom) {
-      gameRooms[roomId].push({ id: socket.id, name: user.name, ready: false});
+    const room = gameRooms[roomId];
+    
+    if (!room.some(p => p.id === socket.id)) {
+      room.push({ id: socket.id, name: user.name, ready: false });
     }
 
-    console.log(`User ${user.name} (${socket.id}) joined room: ${roomId}`);
-
-    io.to(roomId).emit('update_player_list', gameRooms[roomId]);
+    const allReady = room.length > 1 && room.every(p => p.ready);
+    io.to(roomId).emit('room_state_update', {
+      players: room,
+      canStart: allReady
+    });
   });
+  
 
   socket.on('player_ready', (roomId) => {
     const room = gameRooms[roomId];
@@ -69,26 +99,49 @@ io.on('connection', (socket) => {
       if (player) {
         player.ready = !player.ready;
       }
-      io.to(roomId).emit('update_player_list', room);
+
+      const allReady = room.length > 1 && room.every(p => p.ready);
+      io.to(roomId).emit('room_state_update', { 
+        players: room, 
+        canStart: allReady 
+      });
+
+      // io.to(roomId).emit('update_player_list', room);
     }
   });
 
+  socket.on('start_game_now', (roomId) => {
+    io.to(roomId).emit('start_game');
+    console.log(`Game is starting in room: ${roomId}`);
+  });
+
   socket.on('disconnect', () => {
-    console.log(`User disconnected: ${socket.id}`);
+    // console.log(`User disconnected: ${socket.id}`);
+    console.log(`--- User disconnected: ${socket.id} ---`);
     // console.log('Checking for owned rooms. Current events array:', events);
-    // const eventOwned = events.find(event => event.ownerId === socket.id);
-    // if (eventOwned) {
-    //   console.log(`Owner of Room ${eventOwned.name} disconnect. Deleting room.`)
-    //   events = events.filter(event => event.id !== eventOwned.id);
-    //   io.emit('event_deleted', eventOwned.id);
-    // }
+    const eventOwned = events.find(event => event.ownerId === socket.id);
+
+    if (eventOwned) {
+      console.log(`Owner of Room ${eventOwned.name} disconnect. Deleting room.`)
+      events = events.filter(event => event.id !== eventOwned.id);
+      // console.log(`Broadcasting 'event_deleted' for event ID: ${eventOwned.id}`);
+      io.emit('event_deleted', eventOwned.id);
+      return;
+    }
+
     for (const roomId in gameRooms) {
       const room = gameRooms[roomId];
       const playerIndex = room.findIndex((p) => p.id === socket.id);
 
       if (playerIndex !== -1) {
         room.splice(playerIndex, 1);
-        io.to(roomId).emit('update_player_list', room);
+        const allReady = room.length > 1 && room.every(p => p.ready);
+        io.to(roomId).emit('room_state_update', {
+          players: room,
+          canStart: allReady
+        });
+
+        console.log(`Player left room ${roomId}. Updated lobby sent.`);
         break;
       }
     }

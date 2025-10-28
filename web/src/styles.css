@@ -231,6 +231,75 @@ nav a:hover {
 }
 
 /* Right Panel */
+/* --- New Available Events List Styles --- */
+.events-container {
+  width: 100%;
+  max-width: 400px; /* Or adjust to fit your layout */
+}
+
+.events-container h2 {
+  font-size: 1.5rem;
+  color: #343a40;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.events-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Adds space between items */
+}
+
+.event-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 16px 20px;
+  border-radius: 10px;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease-in-out;
+}
+
+.event-item:hover {
+  transform: translateY(-2px); /* Slight lift effect on hover */
+}
+
+.event-name {
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: #495057;
+}
+
+.join-button {
+  background-color: #007bff; /* Blue */
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.join-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+.no-events-message {
+  color: #6c757d;
+  text-align: center;
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
 .available-events-panel {
   flex: 2;
 }
@@ -280,6 +349,72 @@ nav a:hover {
   background-color: #dee2e6;
 }
 
+/* Leaderboard Panel */
+.events-page-layout {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+}
+
+.events-list-container {
+  flex-grow: 1; /* This makes your events list take up the main space */
+}
+
+.leaderboard-panel {
+  width: 300px; /* This gives the leaderboard a fixed width */
+  flex-shrink: 0;
+  background-color: #f4f4f5; /* Light gray background */
+  border: 1px solid #e4e4e7;
+  border-radius: 8px;
+  padding: 16px;
+  height: fit-content; /* Makes it only as tall as its content */
+}
+
+.leaderboard-panel h2 {
+  margin-top: 0;
+  font-size: 1.25rem;
+}
+
+.leaderboard-panel p {
+  font-size: 0.875rem;
+  color: #52525b;
+}
+
+/* --- You already have this, just adding it for completeness --- */
+.leaderboard-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.leaderboard-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #e4e4e7;
+}
+
+.leaderboard-item:last-child {
+  border-bottom: none;
+}
+
+.leaderboard-item .rank {
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: #71717a;
+  width: 30px;
+}
+
+.leaderboard-item .name {
+  font-weight: 600;
+  flex-grow: 1;
+}
+
+.leaderboard-item .wins {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
 /* Game Room */
 .player-list {
   list-style: none;
@@ -305,7 +440,68 @@ nav a:hover {
   border: 1px solid #c3e6cb;
 }
 
+/* --- New Player Card Grid Styles --- */
+.lobby-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  text-align: center;
+}
 
+.player-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  width: 100%;
+  margin: 40px 0;
+}
+
+.player-card {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.player-name {
+  font-size: 1.1rem;
+  color: #495057;
+  margin: 0 0 15px 0;
+}
+
+.status-display,
+.status-button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.status-button {
+  cursor: pointer;
+}
+
+/* Status Colors */
+.status-display.waiting,
+.status-button.waiting {
+  background-color: #6c757d; /* Gray */
+  color: white;
+}
+
+.status-display.ready,
+.status-button.ready {
+  background-color: #28a745; /* Green */
+  color: white;
+}
+
+/* Make the "I'm Ready" button a different color */
+.status-button.waiting {
+  background-color: #007bff; /* Blue */
+}
 
 /* Tic-Tac-Toe */
 .game {
@@ -351,3 +547,73 @@ nav a:hover {
 .winning {
   background-color: #aaffaa;
 }
+
+/* --- Leaderboard Page Styles --- */
+.leaderboard-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.leaderboard-container h1 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.leaderboard-container p {
+  margin-bottom: 30px;
+  color: #6c757d;
+}
+
+.leaderboard-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.leaderboard-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.leaderboard-item:nth-child(odd) {
+  background-color: #f8f9fa;
+}
+
+.leaderboard-item:hover {
+  background-color: #e9ecef;
+}
+
+.leaderboard-item .rank {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #007bff;
+  min-width: 40px;
+  text-align: left;
+}
+
+.leaderboard-item .name {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #495057;
+  text-align: left;
+  flex-grow: 1; /* Pushes wins to the right */
+}
+
+.leaderboard-item .wins {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #28a745;
+}
+
+/* --- Special styles for top 3 --- */
+.leaderboard-item:nth-child(1) .rank { color: #ffc107; } /* Gold */
+.leaderboard-item:nth-child(2) .rank { color: #adb5bd; } /* Silver */
+.leaderboard-item:nth-child(3) .rank { color: #cd7f32; } /* Bronze */

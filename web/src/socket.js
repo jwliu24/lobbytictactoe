@@ -1,6 +1,9 @@
 import { io } from 'socket.io-client';
 
-// Connect your React app to the backend server
-const socket = io('http://localhost:3000');
+const URL = "http://localhost:3000";
+
+const socket = io(URL, {
+  transports: ['polling']
+});
 
 export default socket;
