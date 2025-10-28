@@ -31,14 +31,13 @@ function AppLayout() {
     const userObject = { name: username};
     setUser(userObject);
     localStorage.setItem('user', JSON.stringify(userObject));
-    // socket.connect();
     navigate('/events');
   };
 
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem('user');
-    // socket.disconnect();
+
     navigate('/');
   }
 

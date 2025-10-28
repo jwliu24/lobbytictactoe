@@ -22,7 +22,6 @@ function generateRoomId(){
 }
 
 let events = [
-  // { id: generateRoomId(), name: "Tic-Tac-Toe", ownerId: null }
 ];
 
 app.get('/', (req, res) => {
@@ -39,39 +38,8 @@ io.on('connection', (socket) => {
     socket.emit('room_details', room);
   });
 
-  // socket.on('join_room', (data) => {
-  //   const { roomId, user } = data;
-  //   socket.join(roomId);
-
-  //   // if (!roomId || !user) {
-  //   //   console.error('SERVER ERROR: Invalid data for join_room event.');
-  //   //   return;
-  //   // }
-
-  //   if (!gameRooms[roomId]) {
-  //     gameRooms[roomId] = [];
-  //   }
-
-  //   const room = gameRooms[roomId];
-  //   // const isPlayerInRoom = room.some(player => player.id === socket.id);
-
-  //   if (!isPlayerInRoom) {
-  //     room.push({ id: socket.id, name: user.name, ready: false});
-  //   }
-
-  //   const allReady = room.length > 1 && room.every(p => p.ready);
-  // io.to(roomId).emit('room_state_update', {
-  //   players: room,
-  //   canStart: allReady
-  // });
-
-  //   console.log(`User ${user.name} (${socket.id}) joined room: ${roomId}`);
-
-  //   io.to(roomId).emit('update_player_list', gameRooms[roomId]);
-  // });
 
   socket.on('join_room', (data) => {
-    // ... (most of this is fine)
     const { roomId, user } = data;
     socket.join(roomId);
 
@@ -106,7 +74,6 @@ io.on('connection', (socket) => {
         canStart: allReady 
       });
 
-      // io.to(roomId).emit('update_player_list', room);
     }
   });
 
@@ -116,15 +83,14 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    // console.log(`User disconnected: ${socket.id}`);
     console.log(`--- User disconnected: ${socket.id} ---`);
-    // console.log('Checking for owned rooms. Current events array:', events);
+    
     const eventOwned = events.find(event => event.ownerId === socket.id);
 
     if (eventOwned) {
       console.log(`Owner of Room ${eventOwned.name} disconnect. Deleting room.`)
       events = events.filter(event => event.id !== eventOwned.id);
-      // console.log(`Broadcasting 'event_deleted' for event ID: ${eventOwned.id}`);
+      
       io.emit('event_deleted', eventOwned.id);
       return;
     }

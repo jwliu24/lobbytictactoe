@@ -57,7 +57,6 @@ function Events() {
   }, [navigate]);
 
   const handleCreateEvent = (e) => {
-    // const eventName = prompt('Enter a name for your new game room:');
     e.preventDefault();
     if (newEventName) {
       socket.emit('create_event', { name: newEventName });
